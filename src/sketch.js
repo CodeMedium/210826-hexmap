@@ -43,18 +43,29 @@ function setup() {
   originHex = Hex(0, 0, 0)
 
 	createCanvas(windowWidth, windowHeight)
+  recreateMap()
+}
+
+/**
+ * Regenerates the map
+ */
+function recreateMap () {
+  stroke(getColor())
+  background(50)
+  push()
+  translate(width/2, height/2)
+
+  for (var i = 0; i < hexes.length; i++) {
+    hexDraw(mainLayout, hexes[i], getColor())
+  }
+
+  pop()
 }
 
 /**
  * Main draw loop
  */
 function draw() {
-  stroke('#A45287')
-  background(50)
-  push()
-  translate(width/2, height/2)
-  hexDrawArray(mainLayout, hexes, '#42002B')
-  pop()
 }
 
 /**
@@ -97,6 +108,7 @@ const keypressFn = [function () {
   switch (keyCode) {
     // Space
     case 32:
+      recreateMap()
       break
     // 1
     case 49:
