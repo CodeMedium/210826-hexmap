@@ -21,7 +21,7 @@ let mainLayout
  * Color palettes
  */
 // VSCode Shades of purple editor colors
-colors = ['#ffffff', '#ff628c', '#FF9D00', '#fad000', '#2ca300', '#2EC4B6', '#5D37F0']
+colors = ['#595675', '#daa06e', '#9ec78a', '#bdb29f', '#f4f4e0']
 
 /**
  * Sketch entry point
@@ -42,7 +42,6 @@ function setup() {
 
   boardRadius = Math.floor(Math.min(windowWidth, windowHeight) / params.hexSize)
 
-  background(25)
   angleMode(degrees)
   size = Point(params.hexSize, params.hexSize)
   originPixel = Point(width / 2, height / 2)
@@ -66,7 +65,7 @@ function recreateMap () {
   push()
   translate(width/2, height/2)
   for (var i = 0; i < hexes.length; i++) {
-    hexDraw(mainLayout, hexes[i], hexes[i].color)
+    hexDraw(mainLayout, hexes[i], colors[hexes[i].type])
   }
   pop()
 }
@@ -76,7 +75,9 @@ function recreateMap () {
  */
 function generateTerrainNoise () {
   hexes.forEach((hex, i) => {
-    hexes[i].color = noise(hex.q / params.noiseScale, hex.r / params.noiseScale) * 255
+    hexes[i].type = getColor(
+      noise(hex.q / params.noiseScale, hex.r / params.noiseScale) * 255
+    )
   })
 }
 
@@ -89,8 +90,18 @@ function draw() {
 /**
  * Returns a color in colors
  */
- function getColor (transparent = '') {
-  return colors[Math.floor(random(colors.length))] + transparent
+function getColor (noise) {
+  if (noise < 20) {
+    return 0
+  } else if (noise < 50) {
+    return 1
+  } else if (noise < 90) {
+    return 2
+  } else if (noise < 120) {
+    return 3
+  } else {
+    return 4
+  }
 }
 
 
