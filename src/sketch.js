@@ -12,7 +12,6 @@
  * Description: 
  */
 let size
-let hexSize = 20
 let boardRadius
 let originHex
 let hexes = []
@@ -29,14 +28,23 @@ colors = ['#ffffff', '#ff628c', '#FF9D00', '#fad000', '#2ca300', '#2EC4B6', '#5D
  */
 function setup() {
   // Param args
-  params = Object.assign({}, getURLParams())
+  params = Object.assign({
+    hexSize: 20,
+    noiseScale: 1 / 500,
+    noiseLod: 5,
+    noiseFalloff: 0.5
+  }, getURLParams())
 
-  boardRadius = Math.floor(Math.min(windowWidth, windowHeight) / hexSize)
-  console.log(boardRadius)
+  if (params.seed) {
+    randomSeed(params.seed)
+    noiseSeed(params.seed)
+  }
+
+  boardRadius = Math.floor(Math.min(windowWidth, windowHeight) / params.hexSize)
 
   background(25)
   angleMode(degrees)
-  size = Point(hexSize, hexSize)
+  size = Point(params.hexSize, params.hexSize)
   originPixel = Point(width / 2, height / 2)
   mainLayout = hexLayout(pointyOrient, size, originPixel)
   hexGenerateBoard(boardRadius, hexes, Hex(0, 0, 0))
@@ -50,16 +58,26 @@ function setup() {
  * Regenerates the map
  */
 function recreateMap () {
-  stroke(getColor())
+  noiseDetail(params.noiseLod, params.noiseFalloff)
+  generateTerrainNoise()
+
+  // stroke(getColor())
   background(50)
   push()
   translate(width/2, height/2)
-
   for (var i = 0; i < hexes.length; i++) {
-    hexDraw(mainLayout, hexes[i], getColor())
+    hexDraw(mainLayout, hexes[i], hexes[i].color)
   }
-
   pop()
+}
+
+/**
+ * Generates a terrain using noisy data
+ */
+function generateTerrainNoise () {
+  hexes.forEach((hex, i) => {
+    hexes[i].color = noise(hex.q / params.noiseScale, hex.r / params.noiseScale) * 255
+  })
 }
 
 /**
