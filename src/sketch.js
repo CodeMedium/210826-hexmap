@@ -57,11 +57,12 @@ function setup() {
  * Regenerates the map
  */
 function recreateMap () {
+  hexes = []
+  hexGenerateBoard(boardRadius, hexes, Hex(0, 0, 0))
   noiseDetail(params.noiseLod, params.noiseFalloff)
   generateTerrainNoise()
 
-  // stroke(getColor())
-  background(50)
+  stroke(50)
   push()
   translate(width/2, height/2)
   for (var i = 0; i < hexes.length; i++) {
@@ -133,10 +134,18 @@ function keyPressed () {
  * 
  * @see https://github.com/CodeMedium/subdivided-starships
  */
+function mouseClicked() {
+  noiseSeed()
+  recreateMap()
+}
 const keypressFn = [function () {
+  noiseSeed()
+  recreateMap()
+
   switch (keyCode) {
     // Space
     case 32:
+      noiseSeed()
       recreateMap()
       break
     // 1
