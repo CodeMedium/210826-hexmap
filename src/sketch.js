@@ -11,7 +11,13 @@
  *
  * Description: 
  */
-
+let size
+let hexSize = 20
+let boardRadius
+let originHex
+let hexes = []
+let mainLayout
+ 
 /**
  * Color palettes
  */
@@ -23,9 +29,18 @@ colors = ['#ffffff', '#ff628c', '#FF9D00', '#fad000', '#2ca300', '#2EC4B6', '#5D
  */
 function setup() {
   // Param args
-  params = Object.assign({
+  params = Object.assign({}, getURLParams())
 
-  }, getURLParams())
+  boardRadius = Math.floor(Math.min(windowWidth, windowHeight) / hexSize)
+  console.log(boardRadius)
+
+  background(25)
+  angleMode(degrees)
+  size = Point(hexSize, hexSize)
+  originPixel = Point(width / 2, height / 2)
+  mainLayout = hexLayout(pointyOrient, size, originPixel)
+  hexGenerateBoard(boardRadius, hexes, Hex(0, 0, 0))
+  originHex = Hex(0, 0, 0)
 
 	createCanvas(windowWidth, windowHeight)
 }
@@ -34,6 +49,12 @@ function setup() {
  * Main draw loop
  */
 function draw() {
+  stroke('#A45287')
+  background(50)
+  push()
+  translate(width/2, height/2)
+  hexDrawArray(mainLayout, hexes, '#42002B')
+  pop()
 }
 
 /**
