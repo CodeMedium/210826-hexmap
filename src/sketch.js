@@ -29,10 +29,10 @@ colors = ['#595675', '#daa06e', '#9ec78a', '#bdb29f', '#f4f4e0']
 function setup() {
   // Param args
   params = Object.assign({
-    hexSize: 20,
-    noiseScale: 1 / 500,
-    noiseLod: 5,
-    noiseFalloff: 0.5
+    hexSize: 15,
+    noiseScale: 6,
+    noiseLod: .55,
+    noiseFalloff: .25
   }, getURLParams())
 
   if (params.seed) {
@@ -46,7 +46,6 @@ function setup() {
   size = Point(params.hexSize, params.hexSize)
   originPixel = Point(width / 2, height / 2)
   mainLayout = hexLayout(pointyOrient, size, originPixel)
-  hexGenerateBoard(boardRadius, hexes, Hex(0, 0, 0))
   originHex = Hex(0, 0, 0)
 
 	createCanvas(windowWidth, windowHeight)
@@ -75,9 +74,12 @@ function recreateMap () {
  * Generates a terrain using noisy data
  */
 function generateTerrainNoise () {
+  let minQ = Math.min.apply(Math, hexes.map(function(hex) {return hex.q}))
+  let minR = Math.min.apply(Math, hexes.map(function(hex) {return hex.r}))
+  
   hexes.forEach((hex, i) => {
     hexes[i].type = getColor(
-      noise(hex.q / params.noiseScale, hex.r / params.noiseScale) * 255
+      noise((hex.q + minR) / params.noiseScale, (hex.r + minQ) / params.noiseScale) * 255
     )
   })
 }
