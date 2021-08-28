@@ -9,7 +9,7 @@
  * 		 "Any sufficiently advanced technology is indistinguishable from magic"
  * 		 - Arthur C. Clarke
  *
- * Description: 
+ * Assets: https://cuddlyclover.itch.io/fantasy-hex-tiles
  */
 let size
 let boardRadius
@@ -104,21 +104,79 @@ function renderHexes () {
     let imgCoord = {}
     switch (hexes[i].type) {
       // Ocean
-      case 0: imgCoord = {x: 7, y: 0}; break;
+      case 0:
+        imgCoord = {x: 7, y: 0}
+      break
       // Shore
-      case 1: imgCoord = {x: 6, y: 0}; break;
+      case 1:
+        if (random() < .05) {
+          imgCoord = {x: 6, y: 4}
+        } else {
+          imgCoord = {x: 6, y: 0}
+        }
+      break
       // Beach
-      case 2: imgCoord = {x: 0, y: 3}; break;
+      case 2:
+        imgCoord = {x: 0, y: 3}
+      break
       // Desert
-      case 3: imgCoord = {x: 2, y: 3}; break;
+      case 3:
+        if (random() < .05) {
+          imgCoord = {x: 5, y: 3}
+        } else if (random() < .1) {
+          imgCoord = {x: 3, y: 1}
+        } else if (random() < .15) {
+          imgCoord = {x: 1, y: 3}
+        } else {
+          imgCoord = {x: 2, y: 3}
+        }
+      break
       // Grass
-      case 4: imgCoord = {x: 0, y: 0}; break;
+      case 4:
+        if (random() < .005) {
+          imgCoord = {x: 2, y: 1}
+        } else if (random() < .0075) {
+          imgCoord = {x: 1, y: 1}
+        } else if (random() < .01) {
+          imgCoord = {x: 0, y: 1}
+        } else if (random() < .0125) {
+          imgCoord = {x: 7, y: 4}
+        } else if (random() < .025) {
+          imgCoord = {x: 6, y: 1}
+        } else if (random() < .035) {
+          imgCoord = {x: 5, y: 1}
+        } else if (random() < .040) {
+          imgCoord = {x: 4, y: 1}
+        } else {
+          imgCoord = {x: 0, y: 0}
+        }
+      break
       // Forrest
-      case 5: imgCoord = {x: 0, y: 4}; break;
+      case 5:
+        if (random() < .01) {
+          imgCoord = {x: 2, y: 0}
+        } else if (random() < .3) {
+          imgCoord = {x: 7, y: 1}
+        } else {
+          imgCoord = {x: 0, y: 4}
+        }
+      break
       // Mountain
-      case 6: imgCoord = {x: 3, y: 0}; break;
+      case 6:
+        if (random() < .01) {
+          imgCoord = {x: 2, y: 0}
+        } else if (random() < .3) {
+          imgCoord = {x: 4, y: 0}
+        } else if (random() < .35) {
+          imgCoord = {x: 3, y: 2}
+        } else {
+          imgCoord = {x: 3, y: 0}
+        }
+      break
       // Snow
-      case 7: imgCoord = {x: 5, y: 0}; break;
+      case 7:
+        imgCoord = {x: 5, y: 0}
+      break
     }
 
     // Draw the sprite
