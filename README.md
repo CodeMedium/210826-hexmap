@@ -17,3 +17,6 @@ All functions passed into this array will be called when p5 calls `keyPressed()`
 ## `getColor(transparentAmountHex)`
 
 Returns a random color from `colors`
+
+# Assets
+https://cuddlyclover.itch.io/fantasy-hex-tiles

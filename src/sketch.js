@@ -22,6 +22,7 @@ let mainLayout
  */
 function setup() {
   frameRate(5)
+  bgImage = loadImage('fantasyhextiles_v3_borderless.png')
   
   // VSCode Shades of purple editor colors
   colors = [
@@ -60,7 +61,7 @@ function setup() {
 
   size = Point(params.hexSize, params.hexSize)
   originPixel = Point(width / 2, height / 2)
-  mainLayout = hexLayout(pointyOrient, size, originPixel)
+  mainLayout = hexLayout(flatOrient, size, originPixel)
   originHex = Hex(0, 0, 0)
   
 	main = createCanvas(windowWidth, windowHeight)
@@ -84,6 +85,7 @@ function recreateMap () {
   renderHexes()
 }
 function renderHexes () {
+  world.clear()
   world.stroke(50)
   world.push()
   world.translate(width/2, height/2)
@@ -91,6 +93,28 @@ function renderHexes () {
     hexDraw(mainLayout, hexes[i], colors[hexes[i].type], world)
   }
   world.pop()
+
+  // Render images
+  magnifier.clear()
+  magnifier.push()
+  magnifier.translate(width/2, height/2)
+  for (var i = 0; i < hexes.length; i++) {
+    // Grab the sprite
+    let imgCoord = []
+    switch (hexes[i].type) {
+      // Ocean
+      case 0: imgCoord = {x: 224, y: 0}; break
+      // Shore
+      case 1: imgCoord = {x: 192, y: 0}; break
+    }
+
+    // Draw the sprite
+    if (imgCoord.x) {
+      let corners = hexGetCorners(mainLayout, hexes[i])
+      magnifier.image(bgImage, corners[5].x - 22, corners[5].y - 22, 32, 64, imgCoord.x, imgCoord.y, 32, 64)
+    }
+  }
+  magnifier.pop()
 }
 
 /**
@@ -112,8 +136,14 @@ function generateTerrainNoise () {
  * Main draw loop
  */
 function draw() {
+  // Draw main world
   clear()
   image(world, 0, 0, windowWidth, windowHeight)
+  strokeWeight(3)
+  stroke('#fff')
+  noFill()
+  rect(mouseX - 150, mouseY - 150, 300, 300)
+  image(magnifier, mouseX - 150, mouseY - 150, 300, 300, mouseX - 150, mouseY - 150, 150, 150)
 }
 
 /**
