@@ -27,6 +27,8 @@ function setup() {
   colors = [
     // Water
     color('#595675'),
+    // shore
+    color('#82aeaf'),
     // light sand
     color('#f4de5f'),
     // dark sand
@@ -110,20 +112,30 @@ function draw() {
  * Returns a color in colors
  */
 function getColor (noise) {
-  if (noise < 20) {
+  // Ocean
+  if (noise < 15) {
     return 0
-  } else if (noise < 32) {
+  // Shore
+  } else if (noise < 24) {
     return 1
-  } else if (noise < 45) {
+  // Beach
+  } else if (noise < 32) {
     return 2
-  } else if (noise < 80) {
+  // Dirt
+  } else if (noise < 45) {
     return 3
-  } else if (noise < 100) {
+  // Grass
+  } else if (noise < 80) {
     return 4
-  } else if (noise < 120) {
+  // Forrest
+  } else if (noise < 100) {
     return 5
-  } else {
+  // Mountain
+  } else if (noise < 115) {
     return 6
+  // Snow
+  } else {
+    return 7
   }
 }
 
