@@ -16,17 +16,31 @@ let boardRadius
 let originHex
 let hexes = []
 let mainLayout
- 
-/**
- * Color palettes
- */
-// VSCode Shades of purple editor colors
-colors = ['#595675', '#daa06e', '#9ec78a', '#bdb29f', '#f4f4e0']
 
 /**
  * Sketch entry point
  */
 function setup() {
+  frameRate(5)
+  
+  // VSCode Shades of purple editor colors
+  colors = [
+    // Water
+    color('#595675'),
+    // light sand
+    color('#f4de5f'),
+    // dark sand
+    color('#daa06e'),
+    // grass
+    color('#9ec78a'),
+    // trees
+    color('#4b8351'),
+    // mountain
+    color('#bdb29f'),
+    // snow
+    color('#f4f4e0')
+  ]  
+  
   // Param args
   params = Object.assign({
     hexSize: 15,
@@ -40,7 +54,7 @@ function setup() {
     noiseSeed(params.seed)
   }
 
-  boardRadius = Math.floor(Math.min(windowWidth, windowHeight) / params.hexSize)
+  boardRadius = Math.floor(Math.max(windowWidth, windowHeight) / params.hexSize) / 2
 
   angleMode(degrees)
   size = Point(params.hexSize, params.hexSize)
@@ -56,11 +70,12 @@ function setup() {
  * Regenerates the map
  */
 function recreateMap () {
-  hexes = []
   hexGenerateBoard(boardRadius, hexes, Hex(0, 0, 0))
   noiseDetail(params.noiseLod, params.noiseFalloff)
   generateTerrainNoise()
-
+  renderHexes()
+}
+function renderHexes () {
   stroke(50)
   push()
   translate(width/2, height/2)
@@ -77,6 +92,7 @@ function generateTerrainNoise () {
   let minQ = Math.min.apply(Math, hexes.map(function(hex) {return hex.q}))
   let minR = Math.min.apply(Math, hexes.map(function(hex) {return hex.r}))
   
+  // Basic colors
   hexes.forEach((hex, i) => {
     hexes[i].type = getColor(
       noise((hex.q + minR) / params.noiseScale, (hex.r + minQ) / params.noiseScale) * 255
@@ -96,14 +112,18 @@ function draw() {
 function getColor (noise) {
   if (noise < 20) {
     return 0
-  } else if (noise < 50) {
+  } else if (noise < 32) {
     return 1
-  } else if (noise < 90) {
+  } else if (noise < 45) {
     return 2
-  } else if (noise < 120) {
+  } else if (noise < 80) {
     return 3
-  } else {
+  } else if (noise < 100) {
     return 4
+  } else if (noise < 120) {
+    return 5
+  } else {
+    return 6
   }
 }
 
@@ -137,10 +157,12 @@ function keyPressed () {
  * @see https://github.com/CodeMedium/subdivided-starships
  */
 function mouseClicked() {
+  hexes = []
   noiseSeed()
   recreateMap()
 }
 const keypressFn = [function () {
+  hexes = []
   noiseSeed()
   recreateMap()
 
