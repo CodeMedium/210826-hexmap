@@ -21,7 +21,6 @@ let mainLayout
  * Sketch entry point
  */
 function setup() {
-  frameRate(5)
   bgImage = loadImage('fantasyhextiles_v3_borderless.png')
   
   // VSCode Shades of purple editor colors
@@ -143,7 +142,7 @@ function draw() {
   stroke('#fff')
   noFill()
   rect(mouseX - 150, mouseY - 150, 300, 300)
-  image(magnifier, mouseX - 150, mouseY - 150, 300, 300, mouseX - 150, mouseY - 150, 150, 150)
+  image(magnifier, mouseX - 150, mouseY - 150, 300, 300, mouseX, mouseY, 150, 150)
 }
 
 /**
