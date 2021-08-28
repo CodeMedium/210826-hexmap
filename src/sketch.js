@@ -58,13 +58,19 @@ function setup() {
 
   boardRadius = Math.floor(Math.max(windowWidth, windowHeight) / params.hexSize) / 2
 
-  angleMode(degrees)
   size = Point(params.hexSize, params.hexSize)
   originPixel = Point(width / 2, height / 2)
   mainLayout = hexLayout(pointyOrient, size, originPixel)
   originHex = Hex(0, 0, 0)
-
-	createCanvas(windowWidth, windowHeight)
+  
+	main = createCanvas(windowWidth, windowHeight)
+  world = createGraphics(windowWidth, windowHeight)
+  magnifier = createGraphics(windowWidth, windowHeight)
+  
+  angleMode(degrees)
+  world.angleMode(degrees)
+  magnifier.angleMode(degrees)
+  
   recreateMap()
 }
 
@@ -78,13 +84,13 @@ function recreateMap () {
   renderHexes()
 }
 function renderHexes () {
-  stroke(50)
-  push()
-  translate(width/2, height/2)
+  world.stroke(50)
+  world.push()
+  world.translate(width/2, height/2)
   for (var i = 0; i < hexes.length; i++) {
-    hexDraw(mainLayout, hexes[i], colors[hexes[i].type])
+    hexDraw(mainLayout, hexes[i], colors[hexes[i].type], world)
   }
-  pop()
+  world.pop()
 }
 
 /**
@@ -106,6 +112,8 @@ function generateTerrainNoise () {
  * Main draw loop
  */
 function draw() {
+  clear()
+  image(world, 0, 0, windowWidth, windowHeight)
 }
 
 /**
