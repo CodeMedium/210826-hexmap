@@ -17,12 +17,14 @@ let originHex
 let hexes = []
 let mainLayout
 
+
 /**
  * Sketch entry point
  */
-function setup() {
+function preload() {
   bgImage = loadImage('fantasyhextiles_v3_borderless.png')
-  
+}
+function setup() {
   // VSCode Shades of purple editor colors
   colors = [
     // Water
@@ -99,19 +101,29 @@ function renderHexes () {
   magnifier.translate(width/2, height/2)
   for (var i = 0; i < hexes.length; i++) {
     // Grab the sprite
-    let imgCoord = []
+    let imgCoord = {}
     switch (hexes[i].type) {
       // Ocean
-      case 0: imgCoord = {x: 224, y: 0}; break
+      case 0: imgCoord = {x: 7, y: 0}; break;
       // Shore
-      case 1: imgCoord = {x: 192, y: 0}; break
+      case 1: imgCoord = {x: 6, y: 0}; break;
+      // Beach
+      case 2: imgCoord = {x: 0, y: 3}; break;
+      // Desert
+      case 3: imgCoord = {x: 2, y: 3}; break;
+      // Grass
+      case 4: imgCoord = {x: 0, y: 0}; break;
+      // Forrest
+      case 5: imgCoord = {x: 0, y: 4}; break;
+      // Mountain
+      case 6: imgCoord = {x: 3, y: 0}; break;
+      // Snow
+      case 7: imgCoord = {x: 5, y: 0}; break;
     }
 
     // Draw the sprite
-    if (imgCoord.x) {
-      let corners = hexGetCorners(mainLayout, hexes[i])
-      magnifier.image(bgImage, corners[5].x - 22, corners[5].y - 22, 32, 64, imgCoord.x, imgCoord.y, 32, 64)
-    }
+    let corners = hexGetCorners(mainLayout, hexes[i])
+    magnifier.image(bgImage, corners[5].x, corners[5].y, 32, 48, imgCoord.x * 32, imgCoord.y * 48, 32, 48)
   }
   magnifier.pop()
 }
