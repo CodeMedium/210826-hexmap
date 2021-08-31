@@ -1,6 +1,8 @@
 # p5-starter
 A minimal p5.js starter kit with the following features:
 
+![ezgif-3-5afed11d0c06](https://user-images.githubusercontent.com/89111078/131428841-63a01367-ecc0-4a19-9f63-0173f74a8297.gif)
+
 ```js
 // Querystrings
 ?hexSize=15&noiseScale=.001&noiseLod=5&noiseFalloff=.5&seed=1
